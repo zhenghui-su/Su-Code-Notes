@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div {
+            width: 200px;
+            height: 200px;
+            background-color: pink;
+            border: 10px solid red;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div></div>
+    <script>
+        // client 宽度 和我们offsetWidth 最大的区别就是 不包含边框
+        var div = document.querySelector('div');
+        console.log(div.clientWidth);
+        // clientTop 返回元素上边框的大小
+        // clientLeft 返回元素左边框的大小
+        // clientWidth 返回自身包括padding 内容区的宽度 不含边框 不带单位
+        // clientHeight 返回自身包括padding 内容区的高度 不含边框 不带单位
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>123</div>
+    <script>
+        // 执行事件步骤
+        // 点击div 控制台输出 我被选中了
+        // 1.获取事件源
+        var div = document.querySelector('div');
+        // 2.绑定事件 注册事件
+        // 3.添加事件处理程序
+        div.onclick = function(){
+            console.log('我被选中了');
+        }
+        // 常见鼠标事件
+        // onclick 鼠标点击左键触发
+        // onmouseover 鼠标经过触发
+        // onmouseout 鼠标离开触发
+        // onfocus 获得鼠标焦点触发
+        // onmousemove 鼠标移动触发
+        // onmouseup 鼠标弹起触发
+        // onmousedown 鼠标按下触发
+    </script>
+</body>
+</html>

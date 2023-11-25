@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //Date() 日期对象 是一个构造函数 必须使用new来调用创建对象
+      var arr = new Array(); //创建一个数组对象
+      //1.使用Date
+      var date = new Date();
+      console.log(date);
+      //2.参数常用的写法 数字型 2019,10,01 或者是 字符串型 '2019-10-01 8:8:8'
+      var date1 = new Date(2019, 10, 1);
+      console.log(date1); //返回11月 不是10月
+      var date2 = new Date("2019-10-01 8:8:8");
+      console.log(date2);
+      
+      //格式化日期 年月日
+      var date = new Date();
+      console.log(date.getFullYear()); //返回当前日期的年
+      console.log(date.getMonth() + 1); //获取当月(0-11) 返回的月份少一个月
+      console.log(date.getDate()); //返回当前日
+      console.log(date.getDay()); //返回周几(周日是0，其他正常)
+      //写一个 例如这样的格式： 2019年 5月 1日 星期三
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var dates = date.getDate();
+      var day = date.getDay();
+      var arr1 = [
+        "星期日",
+        "星期一",
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期五",
+        "星期六",
+      ];
+      console.log(
+        "今天是:" + year + "年" + month + "月" + dates + "日" + arr1[day]
+      );
+      
+      //格式化日期 时分秒
+      console.log(date.getHours()); //时
+      console.log(date.getMinutes()); //分
+      console.log(date.getSeconds()); //秒
+      function getTimer() {
+        var time = new Date();
+        var h = time.getHours();
+        h = h < 10 ? '0' + h : h;
+        var m = time.getMinutes();
+        m = m < 10 ? '0' + m : m;
+        var s = time.getSeconds();
+        s = s < 10 ? '0' + s : s;
+        return h + ":" + m + ":" + s;
+      }
+      console.log(getTimer());
+
+      //获取Date总的毫秒数(时间戳) 不是当前而是距离1970年1月1日过了多少毫秒
+      //1.通过 valueOf() getTime()
+      var date11 = new Date();
+      console.log(date11.valueOf());
+      console.log(date11.getTime());
+      //2.简单写法 最常用写法
+      var date22 = +new Date();
+      console.log(date22);
+      //3.H5新增方法
+      console.log(Date.now());
+    </script>
+  </body>
+</html>

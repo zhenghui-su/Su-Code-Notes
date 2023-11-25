@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //1问
+        //console.log(num); 报错
+        
+        
+        //2问
+        console.log(num);//输出undefined 坑1
+        var num = 10;
+        //相当于执行以下代码
+        //var num;
+        //console.log(num);
+        //num = 10;
+        
+        
+        //3问
+        fn();
+        function fn(){
+            console.log(11);
+        }//正常调用
+        
+        
+        //4问
+        fun();//报错  坑2
+        var fun = function(){
+            console.log(22);
+        }
+        //相当于执行以下代码
+        //var fun;
+        //fun();
+        //fun = function(){
+        //    console.log(22);
+        //}
+
+
+
+        //1. js引擎运行js 分为两步： 预解析 代码执行
+        //(1). 预解析 js引擎会把js里面所有的var 还有function提升到当前作用域的最前面
+        //(2). 代码执行 按照代码书写的顺序从上往下执行
+        //2. 预解析分为 变量预解析(变量提升) 和 函数预解析(函数提升)
+        //(1).变量提升 就是把所有的变量声明提升到当前的作用域最前面 不提升赋值操作
+        //(2).函数提升 就是把所有的函数声明提升到当前的作用域最前面 不调用函数
+            
+        f1();
+        console.log(c);
+        console.log(b);
+        console.log(a);
+        function f1(){
+            var a = b = c= 9;
+            console.log(a);
+            console.log(b);
+            console.log(c);
+        }
+
+        //相当于以下
+        function f1(){
+            //var a = b = c= 9;
+            //相当于 var a = 9; b = 9; c= 9;b和c直接赋值，没有var 当全局变量看
+            var a;
+            a = b = c = 9;
+            console.log(a);//9
+            console.log(b);//9
+            console.log(c);//9
+        }
+        f1();
+        console.log(c);//9
+        console.log(b);//9
+        console.log(a);//报错
+    </script>
+</body>
+</html>

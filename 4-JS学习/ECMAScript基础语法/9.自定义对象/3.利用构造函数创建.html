@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+      //new 执行过程
+      //1.new 构造函数可以在内存中创建一个空的对象
+      //2.this 就会指向刚才创建的空对象
+      //3.执行构造函数里面的代码 给这个空对象添加属性和方法
+      //4.返回这个对象
+
+      //3.利用构造函数创建对象，前面两种一次只能创建一个对象
+      //利用函数方法来重复封装对象
+      //构造函数的语法格式
+      // function 构造函数名(){
+      //     this.属性 = 值;
+      //     this.方法 = function(){}
+      // }
+      // new 构造函数名();
+      function Star(uname, age, sex) {
+        this.name = uname;
+        this.age = age;
+        this.sex = sex;
+        this.sing = function(sang){
+            console.log(sang);
+        }
+      }
+      var ldh = new Star("刘德华", 18, "男");
+      console.log(ldh.name);
+      ldh.sing('冰雨');
+
+      //例子
+      function Hero(name,type,blood,attack){
+        this.name = name;
+        this.type = type;
+        this.blood = blood;
+        this.attack = attack;
+      }
+      var lp = new Hero('廉颇','力量型','500血量','攻击：近战');
+      var hy = new Hero('后羿','射手型','100血量','攻击：远程');
+   
+      //构造函数时泛指的某一大类 类似于c++类
+      //对象是特指一个具体的事物
+
+
+   </script>
+</body>
+</html>

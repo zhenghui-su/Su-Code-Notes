@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var chance = prompt("请输入您要的操作\n1.存钱\n2.取钱\n3.显示余额\n4.退出");
+      var sum = 100;
+      while (chance != "4") {
+        if (chance == "1") {
+          var score = prompt("请输入您要存的钱数");
+          sum += parseFloat(score);
+          alert("您的钱数还剩" + sum + "元");
+        } else if (chance == "2") {
+          var score = prompt("请输入您要取的钱数");
+          sum -= parseFloat(score);
+          alert("您的钱数还剩" + sum + "元");
+        } else if (chance == "3") {
+          alert("您的钱数还剩" + sum + "元");
+        }
+        chance = prompt("请输入您要的操作\n1.存钱\n2.取钱\n3.显示余额\n4.退出");
+      }
+      if(chance=='4'){
+        alert("正在退出");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //内置对象即js自带的一些对象，以供开发者使用
+        //内置对象使用：MDN文档
+        //https://developer.mozilla.org/zh-CN/
+
+        //封装数学对象
+        var myMath = {
+            PI:3.1415926,
+            max:function(){
+                var max = arguments[0];
+                for(let i = 1;i<arguments.length;i++){
+                    if(arguments[i]>max){
+                        max = arguments[i];
+                    }
+                }
+                return max;
+            },
+            min:function(){
+                var min = arguments[0];
+                for(let i = 1;i<arguments.length;i++){
+                    if(arguments[i]<min){
+                        min = arguments[i];
+                    }
+                }
+                return min;
+            }
+        }
+        console.log(myMath.PI);
+        console.log(myMath.max(1,5,9));
+        console.log(myMath.min(1,5,9));
+    </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 异步任务通过回调函数实现
+        // 诸如click，resize，load，error，setInterval，setTimeout
+        
+        // 先执行执行栈的同步任务，异步任务放入任务队列，同步执行完毕接着异步任务
+        
+        // 第一个问题
+        // console.log(1);
+
+        // setTimeout(function() {
+
+        //     console.log(3);
+
+        // }, 1000);
+
+        // console.log(2);
+
+        // 2. 第二个问题
+        // console.log(1);
+
+        // setTimeout(function() {
+
+        //     console.log(3);
+
+        // }, 0);
+
+        // console.log(2);
+
+        // 3. 第三个问题
+
+        console.log(1);
+        document.onclick = function() {
+            console.log('click');
+        }
+        console.log(2);
+        setTimeout(function() {
+            console.log(3)
+        }, 3000)
+    </script>
+</body>
+
+</html>

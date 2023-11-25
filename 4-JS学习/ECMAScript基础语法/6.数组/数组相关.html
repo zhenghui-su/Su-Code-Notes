@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //1.利用new 创建数组
+      // var arr = new Array(); 创建一个空数组
+      //2.利用数组字面量创建数组[]
+      // var arr = [];
+      // var arr1 = [1,2,'3',true];
+      //数据用逗号分隔
+      //数组里面的数据称为数组元素
+
+      //访问数组元素
+      //通过索引（下标）来访问 如：arr1[1] arr[3]
+
+      //遍历数组通过for循环
+
+      //数组长度  .length
+      //console.log(arr.length);
+
+      //计算数组的和以及平均值
+      var arr = [2, 6, 1, 7, 4];
+      var sum = 0;
+      var average = 0 ;
+      for (let i = 0; i < arr.length; i++) {
+        sum += arr[i];
+      }
+      console.log(sum);
+      average = sum/arr.length;
+      console.log(average);
+      //输出多个逗号隔开
+      console.log(sum,average);
+
+      //求数组最大值
+      var arr1 = [2,6,1,77,52,25,7];
+      var max=arr1[0];
+      for(let i=0;i<arr1.length;i++){
+        if(arr1[i]>max){
+            max=arr1[i];
+        }
+      }
+      console.log(max);
+
+      //转换为字符串
+      var arr2 = ['red','green','blue','pink'];
+      var str = '';
+      for(let i=0;i<arr2.length;i++){
+        str+=arr2[i]+'|';
+      }
+      console.log(str);
+
+      //可以修改length的长度来增加数组元素
+      //修改索引号 arr2[4] = 'white' 可以替换原来的
+    
+      
+    </script>
+  </body>
+</html>

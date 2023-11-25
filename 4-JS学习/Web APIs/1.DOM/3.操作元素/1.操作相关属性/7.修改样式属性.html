@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            width: 200px;
+            height: 200px;
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+    <div></div>
+    <script>
+        // 1.获取元素
+        var div = document.querySelector('div');
+        // 2.注册事件 处理程序
+        div.onclick = function() {
+            this.style.backgroundColor = 'purple';
+            this.style.width = '250px';
+        }
+        // js 里面的样式采取驼峰命名法 js修改style样式操作产生的是行内样式 css权重比较高
+        
+    </script>
+</body>
+</html>

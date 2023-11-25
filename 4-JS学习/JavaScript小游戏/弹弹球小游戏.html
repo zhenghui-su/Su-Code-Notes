@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小游戏</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<style>
+.head{
+  width: 112px;
+  height: 100px;
+  background: #DFEF91;
+  border: 2px solid;
+  border-radius: 56% 60%/60% 60%;
+  position: relative;
+}
+/* 眼睛 */
+.eye-con{
+  display: flex;
+  position: absolute;
+  top: 50px;
+  left: 14px;
+}
+.eye{
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border-radius: 48%;
+  border: 1.5px solid;
+  position: relative;
+}
+.eye::after{
+  content: "";
+  width: 12px;
+  height: 12px;
+  background: #131313;
+  border-radius: 50%;
+  position: absolute;
+  right: 1px;
+  top: 8px;
+}
+.eye2{
+  margin-left: 4px;
+  margin-top: -8px;
+}
+.eye3{
+  margin-left: 4px; 
+}
+.eye2::after{
+  right: 5px;
+  top: 9px;
+}
+.eye3::after{
+  right: 10px;
+  top: 10px;
+}
+
+.head-top{
+  position: absolute;
+  top: -20px;
+  left: 48px;
+  width: 6px;
+  height: 20px;
+  border-radius: 12px;
+  background: #DFEF91;
+  border: 1.5px solid;
+  z-index: -1;
+}
+.head-top .round{
+  width: 14px;
+  height: 12px;
+  background: #DFEF91;
+  border: 1.5px solid;
+  border-radius: 48%;
+  position: absolute;
+  top: -6px;
+  left: -6px;
+}
+.head-top .round::after{
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 3px;
+  width: 8px;
+  height: 10px;
+  background: #DFEF91;
+  border-radius: 48%;
+}
+.ear{
+    width: 24px;
+    height: 30px;
+    background: #DFEF91;
+    border-radius: 0 0 20% 112%;
+    border: 1.5px solid;
+    position: absolute;
+    left: -20px;
+    top: 40px;
+    z-index: -1;
+}
+.ear-inside{
+  border-top: 24px solid #fff;
+  border-right: 24px solid #fff;
+  border-bottom: 30px solid transparent;
+  border-left: 30px solid transparent;
+  position: absolute;
+  left: -21px;
+  top: -18px;
+  z-index: -1;
+}
+.ear-inside::after{
+  content: "";
+  width: 1.5px;
+  height: 28px;
+  background: #131313;
+  position: absolute;
+  left: 2px;
+  top: -12px;
+  transform: rotate(-52deg);
+}
+.ear-right{
+  left: 106px;
+  border-radius: 0 20% 112% 0;
+}
+.ear-right .ear-inside{
+  border-left: 24px solid #fff;
+  border-top: 24px solid #fff;
+  border-bottom: 30px solid transparent;
+  border-right: 30px solid transparent;
+  left: -8px;
+}
+.ear-right .ear-inside::after{
+  left: -4px;
+  top: -12px;
+  transform: rotate(52deg);
+}
+.leg{
+  width: 16px;
+  height: 26px;
+  background: #DFEF91;
+  border-radius: 60%;
+  border: 1.5px solid;
+  position: absolute;
+  top: 76px;
+  left: 20px;
+  transform: rotate(20deg);
+  z-index: -1;
+}
+.leg-right{
+  left: 80px;
+  transform: rotate(-20deg);
+}
+.eye::after{
+  animation: turn 0.4s linear infinite alternate;
+}
+@keyframes turn{
+  0%{
+    right: 11px;
+  }
+  100%{
+    right: 1px;
+  }
+}
+.monster{
+  animation: move 0.3s ease-in-out infinite alternate;
+}
+@keyframes move{
+  0%{
+    top: -30px;
+    left: 40px;
+    transform: rotate(-30deg);
+  }
+  
+  100%{
+    top: -10px;
+    left: 40px;
+    transform: rotate(30deg);
+  }
+}
+</style>
+<style>
+  *{
+    margin: 0;
+    padding: 0;
+  }
+  #contain {
+    width: 500px;
+    height: 480px;
+    margin: 0 auto;
+    margin-top: 100px;
+  }
+  #box {
+    width: 500px;
+    height: 400px;
+    margin: 0 auto;
+    /* 子绝父相 */
+    position:relative ;
+    border: 1px solid #ccc;
+  }
+  .board {
+    width: 100px;
+    height: 10px;
+    background-color: black;
+    /* 子绝父相 */
+    position:absolute;
+    /* board水平居中 */
+    left:200px;
+    top: 80%;
+  }
+  .ball {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: coral;
+    /* 子绝父相 */
+    position: absolute;
+    left:242px;
+    top:76%;
+  }
+  button {
+    width: 100px;
+    background-color: dodgerblue;
+    border-radius: 10%;
+    color: white;
+    padding: 4px 0;
+    margin: 5px 0;
+  }
+</style>
+<body>
+<div class="head">
+    <div class="eye-con">
+        <div class="eye eye1"></div>
+        <div class="eye eye2"></div>
+        <div class="eye eye3"></div>
+    </div>
+</div>
+
+<div class="head-top">
+    <div class="round"></div>
+</div>
+
+<div class="ear ear-left">
+  <div class="ear-inside"></div>
+</div>
+
+<div class="ear ear-right">
+  <div class="ear-inside"></div>
+</div>
+
+<div class="leg leg-left"></div>
+<div class="leg leg-right"></div>
+
+<div id="contain">
+  <div id="box">
+    <div class="board"></div>
+    <div class="ball"></div>
+  </div>
+  <button>开始游戏</button><br>
+  <span>得分:</span>
+  <span class="score">0</span> 
+</div>
+
+<script>
+//获取各所需元素
+  var contain = document.getElementById("contain");
+  var box = document.getElementById("box");
+  var board = document.getElementsByClassName("board")[0];
+  var ball = document.getElementsByClassName("ball")[0];
+  var btn = document.getElementsByTagName("button")[0];
+  var score = document.getElementsByClassName("score")[0];
+  //分别代表board左距离、右距离；ball左距离、右距离
+  var board_left,board_top,ball_left,ball_top ;
+  var interval,flag=1,sum=0; 
+  
+  //设置小球的速度
+  var speedX = -1,speedY = -1;
+   
+  //监听鼠标进入box
+   box.onmousemove = function() {
+     //事件对象(兼容)
+    var e = event || window.event; 
+    //更改board的left和top
+    board_left = event.pageX - box.offsetLeft -50;
+    board_top = event.pageY - box.offsetTop;  
+    //检测board是否超出边框并更改board和ball位置
+    
+    if(board_left>=0 && board_left<=400) {
+      board.style.left = board_left + "px";
+      //flag的作用是防止点击按钮后再次进入Box后球的位置再变化
+      if(flag) {
+        ball_left = board_left + 45;
+        ball.style.left = ball_left + "px";
+      }  
+    }  
+    if(board_top>=0 && board_top<=390){
+      board.style.top =  board_top + "px";
+      if(flag) {
+        ball_top = board_top - 15;
+        ball.style.top = ball_top +"px";
+      }
+   } 
+   
+  }
+  
+  //监听按钮点击事件
+  btn.onclick = function() {
+    //清除定时器,防止定时器重叠
+    clearInterval(interval);
+    //flag=0后ball不再随board位置变化
+    flag=0;
+    //设置定时器
+    interval =  setInterval(function(){   
+      ball_left += speedX;
+      ball_top += speedY;
+
+      if(ball_left>=0 && ball_left<=485){
+        ball.style.left = ball_left + "px";
+      }
+      if(ball_top>=0 && ball_top<=385){
+        ball.style.top = ball_top + "px";
+      }
+
+      //球的方向改变
+      //撞d到左边右边边框
+      if(ball_left<0|| ball_left>485 ){
+        speedX = -speedX;  
+      }else if(ball_top<0){//撞到上边边框边框
+        speedY = -speedY; 
+      }  
+     
+      //检测ball碰到board
+      if((ball_top+15) >= board_top && ball_left>=board_left && ball_left <= (board_left+50)){
+        speedX = -speedX; 
+        speedY = -speedY;
+        //分数改变
+        sum+=5;
+        score.innerHTML = sum;
+
+      }
+      //游戏结束
+      if(ball_top>385 ){
+        alert("游戏结束，刷新后重新开始");
+        clearInterval(interval);
+      }
+    },5)    
+  }
+</script>    
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 简单数据类型，又称基本数据类型或者值类型 
+        // 复杂类型又叫做引用类型
+        // 值类型: 简单数据类型/基本数据类型，在存储时变量中存储的是值本身，因此叫值类型
+        // string number boolean undefined null
+        console.log(typeof null);//返回的类型是一个空的对象
+        // 如果有个变量我们以后打算存储为对象，暂时没想好放啥，就给null
+        // 引用类型：复杂数据类型，在存储时变量中存储的仅仅是地址(引用)，因此叫做引用类型
+        // 通过new 关键字创建的对象(系统对象,自定义对象),如Object,Array,Date等
+
+        // 1.简单数据类型存放到栈里面 直接开辟一个空间存放的是值
+        // 2.复杂数据类型 首先在栈里面存放地址 十六进制表示 然后这个地址指向堆里面的数据
+
+        // 简单数据类型传参
+        // 函数的形参可以看做一个变量，当我们把一个值类型变量作为参数传给函数的形参时，其实是把变量在栈空间
+        // 里值的复制了一份给形参，那么在方法内部对形参做任何修改，都不会影响到外部变量
+        function fn(a) {
+            a++;
+            console.log(a);
+        }
+        var x = 10;
+        fn(x);
+        console.log(x);//输出11 10
+
+        // 复杂数据类型传参
+        // 函数的形参可以看做一个变量，当我们把一个引用类型变量作为参数传给函数的形参时，其实是把变量在栈空间
+        // 里保存的堆地址复制给了形参，形参和实参其实保存的是同一个堆地址，所以操作的是同一个对象
+        function Person(name){
+            this.name = name;
+        }
+        function f1(x) { //x = p
+            console.log(x.name); //2. 这个输出什么？ 刘德华
+            x.name = '张学友';
+            console.log(x.name); //3. 这个输出什么？ 张学友
+        }
+        var p = new Person('刘德华');
+        console.log(p.name);//1. 这个输出什么？ 刘德华
+        f1(p);
+        console.log(p.name); //4. 这个输出什么？张学友
+    </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //根据位置返回字符
+        //1. charAt(index) 根据位置返回字符
+        var str = 'andy';
+        console.log(str.charAt(3));
+        // 遍历所有的字符
+        for(var i = 0;i < str.length; i++) {
+            console.log(str.charAt(i));
+        }
+        //2. charCodeAt(index) 返回相应索引号的字符的ASCII值 目的判断用户按下了哪个建
+        console.log(str.charCodeAt(0)); //97
+        //3. str[index] H5新增
+        console.log(str[0]);
+
+        //案例：判断字符串'abcoefoxyozzopp'中出现次数最多的字符，并统计其次数
+        var str1 = 'abcoefoxyozzopp';
+        var o = {};
+        for(var i =0;i<str1.length;i++){
+            var chars = str1.charAt(i);//chars是字符串的每一个字符
+            if(o[chars]){//o[chars]得到的是属性值
+                o[chars]++;
+            }else {
+                o[chars]=1;
+            }
+        }
+        console.log(o);
+        //遍历对象
+        var max =0;
+        var ch ='';
+        for(var k in o){
+            //k得到属性名
+            //o[k]得到属性值
+            if(o[k]>max){
+                max = o[k];
+                ch = k;
+            }
+        }
+        console.log(ch+':'+max);
+
+        //字符串操作方法
+        //1. concat('字符串1','字符串2'...)
+        var str2 = 'andy';
+        console.log(str2.concat('red'));
+        //2. substr('截取的起始位置','截取几个字符')
+        var str3 = '改革春风吹满地';
+        console.log(str3.substr(2,2));//第一个2是索引号的2 第二个2是取几个字符
+        //3. 替换字符 replace('被替换的字符','替换为的字符') 只会替换第一个字符
+        var str4 = 'andyandy';
+        console.log(str4.replace('a','b'));//bndyandy
+        //4. 字符转换为数组 split('分隔符') 与join类似
+        var str5 = 'red,pink,blue';
+        console.log(str5.split(','));
+        var str6 = 'red&pink&blue';
+        console.log(str6.split('&'));
+        //toUpperCase() 转换大写
+        //toLowerCase() 转换小写
+   </script>
+</body>
+</html>

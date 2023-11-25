@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    // for(let i=1;i<=100;i++){
+    //     console.log('你好');
+    // }
+
+    // var num= prompt('请你输入次数');
+    // for(let i=1;i<=num;i++){
+    //     console.log('你好');
+    // }
+
+    // for(let i=1;i<=100;i++){
+    //     console.log('这个人今年'+i+'岁了');
+    // }
+
+    //1.求1~100的累加和
+    var sum=0;
+    for(let i=1;i<=100;i++){
+        //sum=sum+i;
+        sum+=i;
+    }
+    console.log(sum);
+
+    //2.求1-100之间所有数的平均值
+    var sum1=0;
+    for(let i=1;i<=100;i++){
+        sum1+=i;
+    }
+    sum1=sum1/100;
+    console.log(sum1);
+
+    //3.求1-100之间所有偶数和奇数的和
+    var evensum=0;
+    var oddsum=0;
+    for(let i=1;i<=100;i++){
+        if(i%2==0){
+            evensum+=i;
+        }
+        else{
+            oddsum+=i;
+        }
+    }
+    console.log(evensum);
+    console.log(oddsum);
+    console.log(evensum+oddsum);
+
+    //4.求1-100之间所有能被3整除的数字的和
+    var sum2=0;
+    for(let i=1;i<=100;i++){
+        if(i%3==0){
+            sum2+=i;
+        }
+    }
+    console.log(sum2);
+</script>
+<body>
+    
+</body>
+</html>

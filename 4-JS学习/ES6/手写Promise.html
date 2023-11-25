@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./SuPromise.js"></script>
+</head>
+
+<body>
+    <script>
+        const p = new SuPromise((resolve, reject) => {
+            setTimeout(() => {
+                // resolve('1-res');
+                reject('1-rej');
+            }, 1000)
+        })
+        /*
+        p.then(res => {
+            console.log("success1", res);
+            return new SuPromise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve('su1-' + res);
+                    // reject('su1拒绝-' + res);
+                }, 1000)
+            })
+        }, rej => {
+            console.log("reject1", rej);
+            // return 'su-222';
+            return new SuPromise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve('su2-' + rej);
+                    // reject('su2拒绝-' + rej);
+                }, 1000)
+            })
+        }).then(res => {
+            console.log("success2", res);
+        }, rej => {
+            console.log("reject2", rej);
+        })
+        */
+        p.then(res => {
+            console.log("success", res);
+            return new SuPromise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(res + "2-res");
+                    // reject("2-rej");
+                }, 1000)
+            })
+        }).then(res => {
+            console.log("success", res);
+        }).catch(err => {
+            console.log("catch", err);
+        })
+    </script>
+</body>
+
+</html>

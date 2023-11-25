@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>获取和转换</title>
+		<script>
+			//typeof 获取数据类型
+			var num = 10;
+			console.log(typeof num); //number
+			var str = 'pink';
+			console.log(typeof str); //string
+			var flag = true;
+			console.log(typeof flag); //boolean
+			var vari = undefined;
+			console.log(typeof vari); //undefined
+			var timer = null;
+			console.log(typeof timer); //object
+			var age = prompt('请输入您的年龄');
+			console.log(age);
+			console.log(typeof age); //string
+		</script>
+		<script>
+			//转换数据类型
+			//转换为字符串类型
+			// 1. 转换
+			var num1 = 1;
+			var str = num1.toString();
+			console.log(str);
+			console.log(typeof str);
+			// 2. 强转
+			var num2 = 2;
+			console.log(String(num2));
+			// 3. 用+拼接来变为字符串
+
+			// 转换为数字型
+			// 1. parseInt(变量) 得到整数，取整的，不进位
+			console.log(parseInt('3.14')); // 3取整
+			console.log(parseInt('3.94')); // 3取整
+			console.log(parseInt('120px')); // 120 会去掉px单位
+			console.log(parseInt('rem120px')); //NaN
+			// 2. parseInt(变量) 得到浮点数
+			console.log(parseFloat('3.14')); //3.14
+			console.log(parseFloat('120px')); //120 去单位
+			console.log(parseFloat('rem120px')); //NaN
+			// 3. 利用Number(变量)
+			var str = '123';
+			console.log(Number(str));
+			console.log(Number('12'));
+			//4. 利用算数运算 - * / 隐式转换
+			console.log('12' - 0);
+			
+			//转换为布尔型
+			//Boolean()
+			//代表空,否定的值会转换为false,如'',0,NaN,null,undefined
+			// 其他转换为true
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

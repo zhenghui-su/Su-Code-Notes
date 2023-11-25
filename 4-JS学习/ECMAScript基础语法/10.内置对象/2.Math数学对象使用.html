@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //Math数学对象 不是一个构造函数， 所以我们不需要new 来调用 而是直接使用里面的属性和方法即可
+      console.log(Math.PI); //一个属性圆周率
+      console.log(Math.max(1, 99, 3)); //一个方法 求最大值
+      console.log(Math.max(-1, -9, -3));
+      //如果没有参数返回 -Infinity 出现非数字型 返回NaN
+
+      //绝对值方法
+      console.log(Math.abs(-1)); //1
+      console.log(Math.abs(1)); //1
+      console.log(Math.abs("-1")); //隐式转换 会把字符串的数字-1转为数字型
+      console.log(Math.abs("pink")); //NaN
+
+      //三个取整方法
+
+      //1.Math.floor() 向下取整 往最小的取值
+      console.log(Math.floor(1.1)); //1
+      console.log(Math.floor(1.9)); //1
+
+      //2.Math.ceil() 向上取整 往最大的取
+      console.log(Math.ceil(1.1)); //2
+      console.log(Math.floor(1.9)); //2
+
+      //3.Math.round() 四舍五入 其他数字四舍五入 5特殊 往大了取
+      //例子： 1  1.5 2 往大的取 所以取2   -2 -1.5 -1 往大的取 所以取-1
+      console.log(Math.round(1.1)); //1
+      console.log(Math.round(1.5)); //2
+      console.log(Math.round(1.9)); //2
+      console.log(Math.round(-1.1)); //-1
+      console.log(Math.round(-1.5)); //-1  结果-1
+
+      //随机数方法 返回一个随机的小数 0 <= x < 1
+      //该方法不跟参数
+      console.log(Math.random());
+      //两个数之间的随机整数且包含这两个整数
+      function getRandom(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+      console.log(getRandom(10, 20));
+      //随机点名
+      var arr = ["张三", "李四", "王五"];
+      console.log(arr[
+        getRandom(0, arr.length - 1)
+      ]);
+      //猜数字游戏
+      //1.随机生成1-10之间的整数，需要用到Math.random()方法
+      //2.需要一直猜到正确为止，所以一直循环
+      //3.while循环简单轻便
+      //4.核心算法：使用if， else if 多分支语句来判断大于，小于，等于
+      function getRandom(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+      var random = getRandom(1, 10);
+      while (true) {
+        var num = prompt("猜一个1-10之间的数字");
+        if (num > random) {
+          alert("你猜大了");
+        } else if (num < random) {
+          alert("你猜小了");
+        } else {
+          alert("你猜对了");
+          break;
+        }
+      }
+      //只有十次机会
+      for(let i=0;i<10;i++){
+        var num = prompt("猜一个1-10之间的数字");
+        if (num > random) {
+          alert("你猜大了");
+        } else if (num < random) {
+          alert("你猜小了");
+        } else {
+          alert("你猜对了");
+          break;
+        }
+      }
+    </script>
+  </body>
+</html>

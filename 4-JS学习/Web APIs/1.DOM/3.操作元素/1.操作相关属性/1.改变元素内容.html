@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button>显示当前系统时间</button>
+    <div>某个时间</div>
+    <script>
+      // 当我们点击按钮 div里面文字会发生变化
+      // 1.获取元素
+      var btn = document.querySelector("button");
+      var div = document.querySelector("div");
+      // 2.注册事件
+      btn.onclick = function () {
+        div.innerText = getDate();
+      };
+      function getDate() {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var dates = date.getDate();
+        var day = date.getDay();
+        var arr1 = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六",];
+        return "今天是:" + year + "年" + month + "月" + dates + "日" + arr1[day];
+      }
+         
+    </script>
+  </body>
+</html>

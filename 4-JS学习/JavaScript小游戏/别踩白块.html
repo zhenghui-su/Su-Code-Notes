@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>别踩白块</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <style>
+        #main {
+            /*游戏背景板的样式*/
+            width: 400px;
+            height: 400px;
+            background: white;
+            border: 1px solid green;
+            margin: 0 auto;
+            position: relative;
+            /*position 属性规定元素的定位类型。relative：生成相对定位的元素，相对于其正常位置进行定位。*/
+            overflow: hidden;
+        }
+
+        /*overflow属性规定当内容溢出元素框时发生的事情。hidden:：内容会被修剪，并且其余内容是不可见的。*/
+        #container {
+            /*下落方块所在的容器样式*/
+            width: 100%;
+            height: 400px;
+            position: relative;
+            top: -100px;
+            /*黑块最开始不能出现在最下面，否则游戏直接结束，因此容器整体上移100px*/
+        }
+
+        .row {
+            /*一行容器的样式*/
+            height: 100px;
+            width: 100%;
+        }
+
+        .cell {
+            /*单个方块的样式*/
+            height: 100px;
+            width: 100px;
+            float: left;
+            /*float 属性定义元素在哪个方向浮动*/
+        }
+
+        .black {
+            /*黑块的样式*/
+            background: black;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            display: inline-block;
+            /*display 属性规定元素应该生成的框的类型，inline-block为行内块元素。*/
+        }
+    </style>
+</head>
+
+<body>
+    <h1>
+        Score:
+        <p id="score">0</p>
+    </h1>
+    <div id="main">
+        <div id="container"></div>
+    </div>
+    <script>
+        var clock = null; //定时器操作句柄
+        var state = 0; //定义游戏当前状态：0初始化，1进行中，2暂停，3失败
+        var speed = 4; //方块下落的速度，初始值为2像素
+
+        //初始化
+        function init() {
+            for (var i = 0; i < 4; i++) { //创建4行row
+                crow();
+            }
+            $('main').onclick = function (ev) { //向main添加点击事件
+                judge(ev); //调用判断函数来判断用户的点击行为是否合规，参数为事件对象
+            }
+        }
+
+
+        //start()启动
+        function start() {
+            clock = window.setInterval('move()', 30); //每30毫秒调用一次移动函数
+        }
+            //下落动画
+            function move() {
+                var con = $('container'); //通过自定义函数$()找到container
+                var top = parseInt(window.getComputedStyle(con, null)['top']); //window.getComputedStyle(element, [pseudoElt]);方法给出应用活动样式表后的元素的所有CSS属性的值，并解析这些值可能包含的任何基本计算。element用于获取计算样式的Element,pseudoElt(可选)指定一个要匹配的伪元素的字符串。必须对普通元素省略（或null）。返回的样式是一个实时的 CSSStyleDeclaration 对象，当元素的样式更改时，它会自动更新本身。CSSStyleDeclaration 表示一个CSS属性键值对的集合。此处初始值为-100
+                if (speed + top > 0) { //当最上面一行row走过头了，无法与main上边缘重合时
+                    top = 0; //直接将row的坐标置为0
+                } else {
+                    top += speed;//调节每次下降的像素，必须是100的约数，这样才能移动若干次后刚好为100px，因为一个方块为100px*100px，刚好能够与main上下两边重合
+                }
+                con.style.top = top + 'px';
+                if (top == 0) { //当最上面一行row刚好落进main内
+                    crow(); //调用函数在最上方插入一行row
+                    con.style.top = '-100px'; //并使其位于main上面隐藏的部分
+                    drow(); //当上下中间共有6行row时调用函数，删除最下面一行row，避免游戏过程中堆积太多元素，给浏览器增加负担
+                } else if (top == (-100 + speed)) { //一轮刚好进行第一次下落，此时最下面一行row刚好准备和main的下边缘触碰
+                    var rows = con.children; //ParentNode.children 是一个只读属性，返回 一个Node的子elements ，是一个动态更新的 HTMLCollection。
+                    if ((rows.length == 5) && (rows[rows.length - 1].pass !== 1)) { //如果此时有5行row，并且最后一行未成功点击黑块
+                        fail(); //游戏失败
+                    }
+                }
+            }
+
+
+            //加速
+            function speedup() {
+                speed += 2;
+                if (speed == 20) {
+                    alert('Excellent!');
+                }
+            }
+
+            //游戏失败
+            function fail() {
+                clearInterval(clock); //clearInterval() 方法可取消由 setInterval() 函数设定的定时执行操作。
+                state = 3; //另游戏状态等于3，最开始定义的3为失败
+                alert('Game Over!');
+            }
+
+            //计分
+            function score() {
+                var newscore = parseInt($('score').innerHTML) + 1; //获取score的innerHTML值并转化为整数，再加一分
+                $('score').innerHTML = newscore; //增加后的分数写入score
+                if (newscore % 10 == 0) { //分数每增加10分
+                    speedup(); //游戏加速
+                }
+            }
+
+
+            //判断玩家点击事件是否需合规
+            function judge(ev) {
+                if (state == 3) { //上文设定游戏失败时state为3，此处判断游戏是否已经结束
+                    return;
+                }
+                if (ev.target.className.indexOf('black') == -1) { //如果点击的元素的属性名不含black，也就是点中了白块
+                    fail();
+                } else {
+                    ev.target.className = 'cell'; //否则点中了黑块，重写属性名，将其改为白块
+                    ev.target.parentNode.pass = 1;//用js获取DOM节点对象后，可以增加一个自定义属性，这里的pass是自定义的，也就是说：当点中黑块的时候，黑块所在的row的pass属性值是1
+                    score(); //加分
+                }
+            }
+
+            //创建行row
+            function crow() {
+                var con = $('container');
+                var row = cdiv('row'); //创建属性名为row的div
+                var classes = createSn(); //一个row下面的属性的数组
+                for (var i = 0; i < 4; i++) {
+                    row.appendChild(cdiv(classes[i])); //创建4个div添加给row，4个div的属性名中随机产生一个cell black，得到一个含有随机位置黑块的row
+                }
+                if (con.firstChild == null) { //如果con没有子元素
+                    con.appendChild(row); //那就添加row
+                } else {
+                    con.insertBefore(row, con.firstChild); //否则将这个row插入到子元素前面
+                }
+            }
+
+
+            //删除最后一行
+            function drow() {
+                var con = $('container');
+                if (con.childNodes.length == 6) {
+                    con.removeChild(con.lastChild); //当有6行row时删除最后一行
+                }
+            }
+            //创建一个div，className是其类名
+            function cdiv(className) {
+                var div = document.createElement('div');
+                div.className = className;
+                return div;
+            }
+
+            //返回一个数组，随机其中一个单元，值为'cell black'，其余皆为'cell'
+            function createSn() {
+                var arr = ['cell', 'cell', 'cell', 'cell'];
+                var i = Math.floor(Math.random() * 4); //Math.random()随机产生范围为[0,1)之间的小数，Math.floor()向下取整，此处为0,1,2,3,
+                arr[i] = 'cell black';
+                return arr;
+            }
+
+            //按照id获取对象，取代反复用到的document.getElementById()
+
+            function $(id) {
+                return document.getElementById(id);
+            }
+            init();
+            start();
+        
+    </script>
+</body>
+
+</html>

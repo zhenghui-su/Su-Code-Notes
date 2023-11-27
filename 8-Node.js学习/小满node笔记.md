@@ -2205,6 +2205,82 @@ exec('pngquant 73kb.png --quality=82 --output test.png')
 ```js
 import { exec } from 'child_process'
 exec('pngquant 73kb.png --speed=1 --quality=82 --output test.png')
-
 ```
+
+## 19-fs上
+
+### 概述
+
+在 Node.js 中，`fs` 模块是文件系统模块（File System module）的缩写，它提供了与文件系统进行交互的各种功能。通过 `fs` 模块，你可以执行诸如读取文件、写入文件、更改文件权限、创建目录等操作，`fs`模块是`Node.js 核心API之一`。
+
+### fs多种策略
+
+如下代码
+
+```js
+import fs from 'node:fs';
+import fs2 from 'node:fs/promises';
+//读取文件
+fs2.readFile('./index.txt').then(result => {
+    console.log(result.toString());
+});
+fs.readFile('./index.txt', (err, data) => {
+    if (err) {
+        return err;
+    }
+    console.log(data.toString());
+});
+let txt = fs.readFileSync('./index.txt');
+console.log(txt.toString());
+```
+
+1. fs支持同步和异步两种模式 增加了`Sync` fs 就会采用同步的方式运行代码，会阻塞下面的代码，不加Sync就是异步的模式不会阻塞。
+
+2. fs新增了promise版本，只需要在引入包后面增加/promise即可，fs便可支持promise回调。
+
+3. fs返回的是一个buffer二进制数据 每两个十六进制数字表示一个字节
+
+buffer如下:
+
+```js
+<Buffer 31 e3 80 81 e9 82 a3 e4 b8 80 e5 b9 b4 e5 86 b3 e8 b5 9b ef bc 8c e6 98 af 53 53 47 e5 af b9 e6 88 98 53 4b 54 ef bc 8c e6 9c 80 e7 bb 88 e6 af 94 e5 ... 635 more bytes>
+```
+
+### 常用API 介绍
+
+读取文件 readFile 读一个参数 读取的路径， 第二个参数是个配置项
+
+encoding 支持各种编码 utf-8之类的
+
+flag 就很多了
+
+- `'a'`: 打开文件进行追加。 如果文件不存在，则创建该文件。
+
+- `'ax'`: 类似于 `'a'` 但如果路径存在则失败。
+
+- `'a+'`: 打开文件进行读取和追加。 如果文件不存在，则创建该文件。
+
+- `'ax+'`: 类似于 `'a+'` 但如果路径存在则失败。
+
+- `'as'`: 以同步模式打开文件进行追加。 如果文件不存在，则创建该文件。
+
+- `'as+'`: 以同步模式打开文件进行读取和追加。 如果文件不存在，则创建该文件。
+
+- `'r'`: 打开文件进行读取。 如果文件不存在，则会发生异常。
+
+- `'r+'`: 打开文件进行读写。 如果文件不存在，则会发生异常。
+
+- `'rs+'`: 以同步模式打开文件进行读写。 指示操作系统绕过本地文件系统缓存。
+
+  这主要用于在 NFS 挂载上打开文件，因为它允许跳过可能过时的本地缓存。 它对 I/O 性能有非常实际的影响，因此除非需要，否则不建议使用此标志。
+
+  这不会将 `fs.open()` 或 `fsPromises.open()` 变成同步阻塞调用。 如果需要同步操作，应该使用类似 `fs.openSync()` 的东西。
+
+- `'w'`: 打开文件进行写入。 创建（如果它不存在）或截断（如果它存在）该文件。
+
+- `'wx'`: 类似于 `'w'` 但如果路径存在则失败。
+
+- `'w+'`: 打开文件进行读写。 创建（如果它不存在）或截断（如果它存在）该文件。
+
+- `'wx+'`: 类似于 `'w+'` 但如果路径存在则失败。
 

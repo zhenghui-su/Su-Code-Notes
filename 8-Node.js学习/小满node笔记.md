@@ -2234,9 +2234,9 @@ let txt = fs.readFileSync('./index.txt');
 console.log(txt.toString());
 ```
 
-1. fs支持同步和异步两种模式 增加了`Sync` fs 就会采用同步的方式运行代码，会阻塞下面的代码，不加Sync就是异步的模式不会阻塞。
+1. fs支持同步和异步两种模式 ，增加了`Sync` fs 就会采用同步的方式运行代码，会阻塞下面的代码，不加Sync就是异步的模式不会阻塞。
 
-2. fs新增了promise版本，只需要在引入包后面增加/promise即可，fs便可支持promise回调。
+2. fs新增了promise版本，只需要在引入包后面增加/promises即可，fs便可支持promise回调。
 
 3. fs返回的是一个buffer二进制数据 每两个十六进制数字表示一个字节
 
@@ -2248,11 +2248,13 @@ buffer如下:
 
 ### 常用API 介绍
 
-读取文件 readFile 读一个参数 读取的路径， 第二个参数是个配置项
+#### 读取文件 `readFile`
 
-encoding 支持各种编码 utf-8之类的
+第一个参数 读取的路径， 第二个参数是个配置项
 
-flag 就很多了
+配置项第一个是encoding，支持各种编码 utf-8之类的
+
+配置项第二个是flag，它的配置就很多了，如下
 
 - `'a'`: 打开文件进行追加。 如果文件不存在，则创建该文件。
 
@@ -2284,3 +2286,77 @@ flag 就很多了
 
 - `'wx+'`: 类似于 `'w+'` 但如果路径存在则失败。
 
+示例代码：
+
+```js
+import fs2 from 'node:fs/promises'
+
+fs2.readFile('./index.txt',{
+    encoding:"utf8",
+    flag:"",
+}).then(result => {
+    console.log(result.toString())
+})
+```
+
+#### 使用可读流读取
+
+使用场景:适合读取`大文件`
+
+```js
+const readStream = fs.createReadStream('./index.txt',{
+    encoding:"utf8"
+})
+
+readStream.on('data',(chunk)=>{
+    console.log(chunk)
+})
+
+readStream.on('end',()=>{
+    console.log('close')
+})
+```
+
+#### 创建文件夹
+
+如果开启 recursive 可以递归创建多个文件夹
+
+```js
+fs.mkdir('path/test/ccc', { recursive: true },(err)=>{
+
+})
+```
+
+#### 删除文件夹
+
+如果开启recursive 递归删除全部文件夹
+
+```js
+fs.rm('path', { recursive: true },(err)=>{
+
+})
+```
+
+#### 重命名文件
+
+第一个参数原始名称 第二个参数新的名称
+
+```js
+fs.renameSync('./test.txt','./test2.txt')
+```
+
+#### 监听文件的变化
+
+返回监听的事件如`change`,和监听的内容`filename`
+
+```js
+fs.watch('./test2.txt',(event,filename)=>{   
+    console.log(event,filename)
+})
+```
+
+### 源码解析
+
+[github源码地址](https://github.com/libuv/libuv)
+
+![](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20231128162647804.png)

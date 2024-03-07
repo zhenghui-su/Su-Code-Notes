@@ -1,0 +1,26 @@
+<!--
+ * @Author: 苏征辉 343196323@qq.com
+ * @Date: 2024-01-18 15:48:10
+ * @LastEditors: 苏征辉 343196323@qq.com
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        fetch('http://localhost:3001/info').then(res => {
+            return res.json()
+        }).then(res => {
+            console.log(res)
+        })
+    </script>
+</body>
+
+</html>

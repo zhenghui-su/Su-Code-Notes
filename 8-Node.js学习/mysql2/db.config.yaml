@@ -1,0 +1,6 @@
+db:
+   host: localhost #主机
+   port: 3306 #端口
+   user: root #账号
+   password: '695469208lqt' #密码 一定要字符串
+   database: susu # 库

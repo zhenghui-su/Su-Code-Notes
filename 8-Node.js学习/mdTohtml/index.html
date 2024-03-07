@@ -1,0 +1,161 @@
+<!--
+ * @Author: 苏征辉 343196323@qq.com
+ * @Date: 2023-12-20 16:16:54
+ * @LastEditors: 苏征辉 343196323@qq.com
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        markdown to html
+    </title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <h2>22-脚手架</h2>
+<h3>编写自己的脚手架</h3>
+<p>什么是脚手架呢？如<code>vue-cli</code>、<code>Create React App</code>、<code>Angular CLI</code>，这一系列帮我们创建模板的工具</p>
+<p>编写自己的脚手架是指创建一个<strong>定制化</strong>的工具，用于快速生成项目的基础结构和代码文件，以及提供一些常用的命令和功能。通过编写自己的脚手架，可以定义项目的目录结构、文件模板，管理项目的依赖项，生成代码片段，以及提供命令行接口等功能</p>
+<ul>
+<li><p>项目结构：脚手架定义了项目的目录结构，包括源代码、配置文件、静态资源等。</p>
+</li>
+<li><p>文件模板：脚手架提供了一些预定义的文件模板，如 HTML 模板、样式表、配置文件等，以加快开发者创建新文件的速度。</p>
+</li>
+<li><p>命令行接口：脚手架通常提供一个命令行接口，通过输入命令和参数，开发者可以执行各种任务，如创建新项目、生成代码文件、运行测试等。</p>
+</li>
+<li><p>依赖管理：脚手架可以帮助开发者管理项目的依赖项，自动安装和配置所需的库和工具。</p>
+</li>
+<li><p>代码生成：脚手架可以生成常见的代码结构，如组件、模块、路由等，以提高开发效率。</p>
+</li>
+<li><p>配置管理：脚手架可以提供一些默认的配置选项，并允许开发者根据需要进行自定义配置</p>
+</li>
+</ul>
+<p><img src="https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20231219160322031.png" alt="image-20231219160322031"></p>
+<h3>工具介绍</h3>
+<p>我们来学习一下所需要用到的第三方库，通过<code>npm init</code>生成初始的 package，然后<code>npm i</code>下载下面的库</p>
+<ul>
+<li><strong><code>commander</code></strong></li>
+</ul>
+<blockquote>
+<p>Commander 是一个用于<strong>构建命令行工具</strong>的 npm 库。它提供了一种简单而直观的方式来创建命令行接口，并处理命令行参数和选项。使用 Commander，你可以轻松定义命令、子命令、选项和帮助信息。它还可以处理命令行的交互，使用户能够与你的命令行工具进行交互</p>
+</blockquote>
+<ul>
+<li><strong><code>inquirer</code></strong></li>
+</ul>
+<blockquote>
+<p>Inquirer 是一个强大的<strong>命令行交互工具</strong>，用于与用户进行交互和收集信息。它提供了各种丰富的交互式提示（如输入框、选择列表、确认框等），可以帮助你构建灵活的命令行界面。通过 Inquirer，你可以向用户提出问题，获取用户的输入，并根据用户的回答采取相应的操作。</p>
+</blockquote>
+<ul>
+<li><strong><code>ora</code></strong></li>
+</ul>
+<blockquote>
+<p>Ora 是一个用于在<strong>命令行界面显示加载动画</strong>的 npm 库。它可以帮助你在执行耗时的任务时提供一个友好的加载状态提示。Ora 提供了一系列自定义的加载动画，如旋转器、进度条等，你可以根据需要选择合适的加载动画效果，并在任务执行期间显示对应的加载状态。</p>
+</blockquote>
+<ul>
+<li><strong><code>download-git-repo</code></strong></li>
+</ul>
+<blockquote>
+<p>Download-git-repo 是一个用于<strong>下载 Git 仓库的 npm 库</strong>。它提供了一个简单的接口，可以方便地从远程 Git 仓库中下载项目代码。你可以指定要下载的仓库和目标目录，并可选择指定分支或标签。Download-git-repo 支持从各种 Git 托管平台（如 GitHub、GitLab、Bitbucket 等）下载代码。</p>
+</blockquote>
+<h3>编写代码</h3>
+<h4>index.js</h4>
+<p>第一行要写 <code>#!/usr/bin/env node</code></p>
+<p>这是一个 特殊的注释 用于告诉操作系统用 node 解释器去执行这个文件，而不是显式地调用 <code>node</code> 命令</p>
+<pre><code class="language-js">#!/usr/bin/env node
+import { program } from &#39;commander&#39;;
+import inquirer from &#39;inquirer&#39;;
+import fs from &#39;node:fs&#39;;
+import { checkPath, downloadTemp } from &#39;./utils.js&#39;;
+let json = fs.readFileSync(&#39;./package.json&#39;, &#39;utf-8&#39;);
+json = JSON.parse(json);
+
+program.version(json.version); //创建版本号
+//添加create 命令 和 别名crt 以及描述 以及 执行完成之后的动作
+program
+  .command(&#39;create &lt;project&gt;&#39;)
+  .alias(&#39;ctr&#39;)
+  .description(&#39;create a new project&#39;)
+  .action((project) =&gt; {
+    //命令行交互工具
+    inquirer
+      .prompt([
+        {
+          type: &#39;input&#39;,
+          name: &#39;projectName&#39;,
+          message: &#39;project name&#39;,
+          default: project,
+        },
+        {
+          type: &#39;confirm&#39;,
+          name: &#39;isTs&#39;,
+          message: &#39;是否支持typeScript&#39;,
+        },
+      ])
+      .then((answers) =&gt; {
+        if (checkPath(answers.projectName)) {
+          console.log(&#39;文件已存在&#39;);
+          return;
+        }
+
+        if (answers.isTs) {
+          downloadTemp(&#39;ts&#39;, answers.projectName);
+        } else {
+          downloadTemp(&#39;js&#39;, answers.projectName);
+        }
+      });
+  });
+
+program.parse(process.argv);
+</code></pre>
+<h4>utils.js</h4>
+<pre><code class="language-js">import fs from &#39;node:fs&#39;;
+import download from &#39;download-git-repo&#39;;
+import ora from &#39;ora&#39;;
+const spinner = ora(&#39;下载中...&#39;);
+//验证路径
+export const checkPath = (path) =&gt; {
+  return fs.existsSync(path);
+};
+
+//下载
+export const downloadTemp = (branch, project) =&gt; {
+  spinner.start();
+  return new Promise((resolve, reject) =&gt; {
+    download(
+      `direct:https://gitee.com/chinafaker/vue-template.git#${branch}`,
+      project,
+      { clone: true },
+      function (err) {
+        if (err) {
+          reject(err);
+          console.log(err);
+        }
+        resolve();
+        spinner.succeed(&#39;下载完成&#39;);
+      }
+    );
+  });
+};
+</code></pre>
+<h4>package.json</h4>
+<p>加入如下的配置</p>
+<pre><code class="language-json">&quot;type&quot;: &quot;module&quot;, //使用import需要设置这个,写入package记得去注释
+&quot;bin&quot;: {
+  &quot;test-cli&quot;: &quot;src/index.js&quot;
+}
+</code></pre>
+<p>配置完成之后 需要执行<code>npm link</code>，用于生成软连接挂载到全局，便可以全局执行 vue-cli 这个命令</p>
+<p><img src="https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20231219162059321.png" alt="image-20231219162059321"></p>
+<p>然后执行命令：</p>
+<p><img src="https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20231219210802350.png" alt="image-20231219210802350"></p>
+<p>生成如下：
+<img src="https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20231219210742294.png" alt="image-20231219210742294"></p>
+
+</body>
+
+</html>

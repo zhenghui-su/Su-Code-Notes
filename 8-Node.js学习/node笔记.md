@@ -6364,3 +6364,483 @@ redis2.publish('channel', 'hello world');
 ```
 
 ## 49-lua( 安装-介绍 )
+
+### lua
+
+Lua是一种轻量级、高效、可嵌入的脚本语言，最初由巴西里约热内卢天主教大学（Pontifical Catholic University of Rio de Janeiro）的一个小团队开发而成。它的名字"Lua"在葡萄牙语中意为"月亮"，寓意着Lua作为一门明亮的语言。
+
+Lua具有简洁的语法和灵活的语义，被广泛应用于嵌入式系统、游戏开发、Web应用、脚本编写等领域。它的设计目标之一是作为扩展和嵌入式脚本语言，可以与其他编程语言无缝集成。Lua的核心只有很小的代码库，但通过使用模块和库可以轻松地扩展其功能。
+
+以下是一些关键特点和用途介绍：
+
+1. 简洁高效：Lua的语法简单清晰，语义灵活高效。它使用动态类型和自动内存管理，支持面向过程和函数式编程风格，并提供了强大的协程支持。
+2. 嵌入式脚本语言：Lua被设计为一种可嵌入的脚本语言，可以轻松地与其他编程语言集成。它提供了C API，允许开发者将Lua嵌入到C/C++程序中，或者通过扩展库将Lua嵌入到其他应用程序中。
+3. 游戏开发：Lua在游戏开发中广泛应用。许多游戏引擎（如Unity和Corona SDK）都支持Lua作为脚本语言，开发者可以使用Lua编写游戏逻辑、场景管理和AI等。
+4. 脚本编写：由于其简洁性和易学性，Lua经常被用作脚本编写语言。它可以用于编写各种系统工具、自动化任务和快速原型开发。
+5. 配置文件：Lua的语法非常适合用作配置文件的格式。许多应用程序和框架使用Lua作为配置文件语言，因为它易于阅读、编写和修改。
+
+为了增强性能和扩展性，可以将Lua与Redis和Nginx结合使用。这种组合可以用于构建高性能的Web应用程序或API服务。
+
+1. Redis：Redis是一个快速、高效的内存数据存储系统，它支持各种数据结构，如字符串、哈希、列表、集合和有序集合。与Lua结合使用，可以利用Redis的高速缓存功能和Lua的灵活性来处理一些复杂的计算或数据查询。
+   - 缓存数据：使用Redis作为缓存存储，可以将频繁访问的数据存储在Redis中，以减轻后端数据库的负载。Lua可以编写与Redis交互的脚本，通过读取和写入Redis数据来提高数据访问速度。
+   - 分布式锁：通过Redis的原子性操作和Lua的脚本编写能力，可以实现分布式锁机制，用于解决并发访问和资源竞争的问题。
+2. Nginx：Nginx是一个高性能的Web服务器和反向代理服务器。它支持使用Lua嵌入式模块来扩展其功能。
+   - 请求处理：使用Nginx的Lua模块，可以编写Lua脚本来处理HTTP请求。这使得可以在请求到达应用程序服务器之前进行一些预处理、身份验证、请求路由等操作，从而减轻后端服务器的负载。
+   - 动态响应：通过结合Lua和Nginx的subrequest机制，可以实现动态生成响应。这对于根据请求参数或其他条件生成动态内容非常有用。
+   - 访问控制：使用Lua脚本，可以在Nginx层面对访问进行细粒度的控制，例如IP白名单、黑名单、请求频率限制等。
+
+### 安装
+
+[lua官网](https://www.lua.org/)
+
+![image-20240309205658066](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240309205658066.png)
+
+![image-20240309210141492](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240309210141492.png)
+
+![image-20240309210218970](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240309210218970.png)
+
+选择对应的平台下载就好
+
+![image-20240309210302445](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240309210302445.png)
+
+下载完成，解压到文件夹，将文件夹路径配置环境变量即可
+
+使用lua54 测试一下
+
+![image-20240309210402898](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240309210402898.png)
+
+### vscode支持
+
+找到扩展安装以下两个插件
+
+![image-20240309210616363](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240309210616363.png)
+
+调试代码
+
+![image-20240309211307276](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240309211307276.png)
+
+## 50-lua( lua的基本使用 )
+
+### lua基本使用
+
+全局变量局部变量
+
+- 全局变量是在全局作用域中定义的变量，可以在脚本的任何地方访问。
+- 全局变量在定义时不需要使用关键字，直接赋值即可。
+
+```lua
+chen = 'chenchen'
+
+print(chen)
+```
+
+- 局部变量是在特定作用域内定义的变量，只能在其所属的作用域内部访问。
+- 局部变量的作用域通常是函数体内部，也可以在代码块（使用 `do...end`）中创建局部变量。
+- 在局部作用域中，可以通过简单的赋值语句定义局部变量。
+
+```lua
+--local 定义局部变量
+local chen = 'susu'
+
+print(chen)
+```
+
+条件语句
+
+在Lua中，条件判断语句可以使用 `if`、`elseif` 和 `else` 关键字来实现
+
+```lua
+local su = 'chenchen'
+
+if su == "chenchen" then
+    print("chenchen")
+elseif su == "chenchen1" then
+    print("chenchen1")
+else
+    print("not su")
+end
+```
+
+函数
+
+在Lua中，函数是一种可重复使用的代码块，用于执行特定的任务或操作
+
+```lua
+local su = 'chenchen'
+
+function func(name)
+    if name == "chenchen" then
+        print("chenchen")
+        return 1
+    elseif name == "chenchen1" then
+        print("chenchen1")
+        return 2
+    else
+        print("not su")
+        return 3
+    end
+end
+
+local result = func(su)
+print(result)
+```
+
+### 数据类型
+
+1. `nil`：**表示无效值或缺失值**。
+2. `boolean`：**表示布尔值，可以是 `true` 或 `false`**。
+3. `number`：**表示数字，包括整数和浮点数**。
+4. `string`：**表示字符串，由字符序列组成**。
+5. `table`：**表示表，一种关联数组，用于存储和组织数据**。
+6. `function`：**表示函数，用于封装可执行的代码块**。
+7. `userdata`：表示用户自定义数据类型，通常与C语言库交互使用。
+8. `thread`：表示协程，用于实现多线程编程。
+9. `metatable`：表示元表，用于定义表的行为。
+
+常用数据类型用法
+
+```lua
+type = false --布尔值
+type = nil --就是null
+type = 1 --整数
+type = 1.1 --浮点型
+type = 'susu' --字符串
+print(type)
+```
+
+字符串拼接 `..`
+
+```lua
+local s = 'ch'
+local u = 'en'
+print(s .. u)
+```
+
+table 可以描述 对象和数组
+
+> lua索引从1开始
+
+```lua
+--对象
+table = {
+    name = "chenchen",
+    age = 18
+}
+print(table.name)
+print(table.age)
+--数组
+arr = {1,2,3,4,6}
+print(arr[1])
+```
+
+循环
+
+```lua
+for i = 1, 10, 3 do --开始 结束 步长  步长就是递增数量
+    print(i)
+end
+```
+
+循环table
+
+```lua
+arr = {name = "hello", age = 18, sex = "male"}
+for k, v in pairs(arr) do
+    print(k, v)  --key 和 value 也就是 name 和 hello ...
+end
+```
+
+循环数组
+
+```lua
+local arr = {10,20,30}
+
+for i, v in ipairs(arr) do
+    print(i,v)
+end
+```
+
+### 模块化
+
+test.lua 暴露一个方法add
+
+```lua
+local M = {}
+
+function M.add(a, b)
+    return a + b
+end
+
+return M
+```
+
+index.lua 引入该文件调用add方法
+
+```lua
+local math = require('test')
+
+local r = math.add(1, 2)
+
+print(r)
+```
+
+## 51-lua + Redis( 限流阀 )
+
+### 限流功能
+
+目前我们学习了`redis`,`lua`,`nodejs`，于是可以结合起来做一个限流功能，好比一个抽奖功能，你点击次数过多，就会提示请稍后重试，进行限制，我们来实现一下该功能。
+
+### 安装依赖
+
+```sh
+npm i ioredis express
+```
+
+### 代码编写
+
+index.js
+
+- express 帮我们提供接口
+- ioredis可以运行lua脚本，并且连接redis服务
+- 我们做了三个常量 第一个TIME 就是说控制一个时间例如30秒之内的操作，第二个CHANGE，就是控制次数，比如操作了五次。第三个就是key，就是往redis存储的值，定义了限流阀三个常量
+- redis.eval 第一个参数就是lua的代码我们用fs读取了它，第二个参数是key的数量我们有1个，第三个参数就是key，第四个是arguments，第五个也是arguments，第六个是个回调成功的失败，成功会接受返回值
+
+```js
+import express from 'express'
+import Redis from 'ioredis'
+import fs from 'node:fs'
+const lua = fs.readFileSync('./index.lua', 'utf8')
+const redis = new Redis()
+const app = express()
+//限流阀
+
+const TIME = 30
+const CHANGE = 5
+const KEY = 'lottery'
+
+app.use('*', (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    next()
+})
+
+app.get('/lottery', (req, res) => {
+    //lua 就是lua的脚本
+    //1 代表有一个key
+    //key就是接受的key
+    //TIME 是 第一个参数
+    //CHANGE 是 第二个参数
+    redis.eval(lua, 1, KEY, CHANGE, TIME, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        if (result === 1) {
+            res.send('抽奖成功')
+        } else {
+            res.send('请稍后重试！')
+        }
+    })
+})
+
+app.listen(3000, () => {
+    console.log('Server started on port 3000')
+})
+```
+
+index.lua
+
+- `KEYS | ARGV 全局变量注意只能用在redis里面`
+- tonumber就是将字符串转换为数字类型
+- redis.call 就是调用redis的命令
+- incr 就是递增值
+- expire 就是存储过期时间
+- 大致思路就是先读取值如果值存在并且超过限流阀则返回0表示操作频繁，否则点击一次累加一次
+
+```lua
+local key = KEYS[1] --接受key值
+local limit = tonumber(ARGV[1]) 
+local interval = tonumber(ARGV[2])
+local count = tonumber(redis.call("get", key) or "0")
+
+if count  > limit then
+    return 0
+else
+    redis.call("incr", key) -- lottery: 0++ 1 2 3 4 5
+    redis.call("expire", key, interval) -- lottery: 0 1 2 3 4 5
+    return 1
+end
+```
+
+index.html 代码测试
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn">抽奖</button>
+    <script>
+       const btn = document.getElementById('btn');
+       btn.onclick = function(){
+           fetch('http://localhost:3000/lottery').then(res=>{
+               return res.text()
+           }).then(data=>{
+               console.log(data)
+               alert(data)
+           })
+       }
+    </script>
+</body>
+</html>
+```
+
+正常点击
+
+![image-20240310212258408](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240310212258408.png)
+
+超过五次
+
+![image-20240310212332626](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240310212332626.png)
+
+我们通过可视化工具可以查看到Redis中数值已经超过5了，所以限制了
+
+![image-20240310212423397](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240310212423397.png)
+
+## 52-定时任务( 自动签到 )
+
+### 什么是定时任务？
+
+定时任务是指在预定的时间点或时间间隔内执行的任务或操作。它们是自动化执行特定逻辑的一种方式，可用于执行重复性的、周期性的或计划性的任务。
+
+定时任务通常用于以下情况：
+
+1. 执行后台任务：定时任务可用于自动执行后台任务，如数据备份、日志清理、缓存刷新等。通过设定适当的时间点或时间间隔，可以确保这些任务按计划进行，而无需手动干预。
+2. 执行定期操作：定时任务可用于执行定期操作，如发送电子邮件提醒、生成报告、更新数据等。通过设定适当的时间点，可以自动触发这些操作，提高效率并减少人工操作的需求。
+3. 调度任务和工作流：定时任务可以用于调度和协调复杂的任务和工作流程。通过设置任务之间的依赖关系和执
+
+### 安装依赖
+
+```sh
+npm install node-schedule request
+```
+
+[node-schedule官方文档](https://www.npmjs.com/package/node-schedule)，request调用接口
+
+> 一般定时任务都是用`cron`表达式去表示时间的
+
+### cron表达式
+
+Cron表达式是一种用于指定定时任务执行时间的字符串表示形式。它由6个或7个字段组成，每个字段表示任务执行的时间单位和范围。
+
+Cron表达式的典型格式如下：
+
+```markdown
+*    *    *    *    *    *
+┬    ┬    ┬    ┬    ┬    ┬
+│    │    │    │    │    │
+│    │    │    │    │    └── 星期（0 - 6，0表示星期日）
+│    │    │    │    └───── 月份（1 - 12）
+│    │    │    └────────── 日（1 - 31）
+│    │    └─────────────── 小时（0 - 23）
+│    └──────────────────── 分钟（0 - 59）
+└───────────────────────── 秒（0 - 59）
+```
+
+| 域              | 是否必需 | 取值范围                                                     | 特殊字符      |
+| --------------- | -------- | ------------------------------------------------------------ | ------------- |
+| 秒 Seconds      | 是       | [0, 59]                                                      | * , - /       |
+| 分钟 Minutes    | 是       | [0, 59]                                                      | * , - /       |
+| 小时 Hours      | 是       | [0, 23]                                                      | * , - /       |
+| 日期 DayofMonth | 是       | [1, 31]                                                      | * , - / ? L W |
+| 月份 Month      | 是       | [1, 12]或[JAN, DEC]                                          | * , - /       |
+| 星期 DayofWeek  | 是       | [1, 7]或[MON, SUN]。若使用[1, 7]表达方式，1代表星期一，7代表星期日。 | * , - / ? L # |
+| 年 Year         | 否       | 1970+                                                        | - * /         |
+
+每个字段可以接受特定的数值、范围、通配符和特殊字符来指定任务的执行时间：
+
+- 数值：表示具体的时间单位，如1、2、10等。
+- 范围：使用`-`连接起始和结束的数值，表示一个范围内的所有值，如1-5表示1到5的所有数值。
+- 通配符：使用`*`表示匹配该字段的所有可能值，如`*`表示每分钟、每小时、每天等。
+- 逗号分隔：使用逗号分隔多个数值或范围，表示匹配其中任意一个值，如1,3表示1或3。
+- 步长：使用`/`表示步长，用于指定间隔的数值，如`*/5`表示每隔5个单位执行一次。
+- 特殊字符：Cron表达式还支持一些特殊字符来表示特定的含义，如`?`用于替代日和星期字段中的任意值，`L`表示最后一天，`W`表示最近的工作日等。
+
+以下是一些常见的Cron表达式示例：
+
+- `* * * * *`：每分钟执行一次任务。
+- `0 * * * *`：每小时的整点执行一次任务。
+- `0 0 * * *`：每天的午夜执行一次任务。
+- `0 0 * * 1`：每周一的午夜执行一次任务。
+- `0 0 1 * *`：每月的1号午夜执行一次任务。
+- `0 0 1 1 *`：每年的1月1日午夜执行一次任务。
+
+### 代码编写(掘金自动签到)
+
+```js
+import schedule from 'node-schedule'
+import request from 'request'
+import config from './config.js'
+schedule.scheduleJob('0 30 0 * * *', () => {
+    request(config.check_url, {
+        method: 'post',
+        headers: {
+            Referer: config.url,
+            Cookie: config.cookie
+        },
+    }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            console.log(body)
+        }
+    })
+})
+```
+
+config.js
+
+```js
+export default {
+    cookie: 'sessionid=你的cookie',
+    url: 'https://juejin.cn/',
+    check_url: 'https://api.juejin.cn/growth_api/v1/check_in?aid=你的aid&uid=你的uid'
+}
+```
+
+运行，在这我设置每秒调用，所以返回重复签到了
+
+![image-20240310213835154](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240310213835154.png)
+
+> aid和uid可以在掘金网页f12中网络随便一个接口都有显示，cookie可以通过f12应用查看
+
+查看是否签到成功，发现成功
+
+![image-20240310214108794](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240310214108794.png)
+
+## 53-serverLess( 云函数 )
+
+### 什么是serverLess?
+
+`serverLess`并不是一个技术，他只是一种架构模型，(`无服务器架构`)，在传统模式下，我们部署一个服务，需要选择服务器`Linux`,`windows`等,并且还要安装环境，熟悉操作系统命令，知晓安全知识等，有一定成本，`serverLess`，核心思想就是，让开发者更多的是关注业务本身，而不是服务器运行成本。
+
+### FaaS与BaaS
+
+1. 函数即服务（FaaS）：
+    FaaS是一种Serverless计算模型，它允许开发人员编写和部署函数代码，而无需关心底层的服务器管理。在FaaS中，开发人员只需关注函数的实现和逻辑，将其上传到云平台上，平台会负责函数的运行和扩展。当有请求触发函数时，云平台会自动为函数提供所需的计算资源，并根据请求量进行弹性扩展。这种按需计算的模式使开发人员可以更专注于业务逻辑的实现，同时实现了资源的高效利用。
+
+> 每个函数即一个服务，函数内只需处理业务，可以使用BASS层提供的服务已完成业务，无需关心背后计算资源的问题。
+
+2. 后端即服务（BaaS）：
+    后端即服务是一种提供面向移动应用和Web应用的后端功能的云服务模型。BaaS为开发人员提供了一组预构建的后端服务，如用户身份验证、数据库存储、文件存储、推送通知等，以简化应用程序的开发和管理。开发人员可以使用BaaS平台提供的API和SDK，直接集成这些功能到他们的应用中，而无需自己构建和维护后端基础设施。
+
+> 对后端的资源当成一种服务，如文件存储，数据存储，推送服务，身份验证。该层只需提供对应的服务，无需关心业务。定义为底层基础服务，由其他服务调用，正常不触及用户终端。
+
+### 编写serverLess云函数
+
+安装依赖
+
+```sh
+npm install @serverless-devs/s -g
+```
+

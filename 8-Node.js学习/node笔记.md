@@ -6840,7 +6840,63 @@ export default {
 
 安装依赖
 
-```sh
+```bash
 npm install @serverless-devs/s -g
 ```
+
+[@serverless-devs/s文档](https://www.npmjs.com/package/@serverless-devs/s)
+
+**Serverless Devs** 是一个开源开放的 Serverless 开发者平台，致力于为开发者提供强大的工具链体系。通过该平台，开发者不仅可以一键体验多云 Serverless 产品，极速部署 Serverless 项目，还可以在 Serverless 应用全生命周期进行项目的管理，并且非常简单快速的将 Serverless Devs 与其他工具/平台进行结合，进一步提升研发、运维效能。
+
+1. 配置密钥
+
+​	我们需要选择一款云产品，这里用阿里云演示，当然你也可以用别的。
+
+​	访问旁边链接，登录阿里云，[RAM控制](https://ram.console.aliyun.com/manage/ak)
+
+![image-20240317160221319](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240317160221319.png)
+
+2. 添加密钥
+
+​	s命令 你安装完成 `@serverless-devs/s` 这个之后就有了
+
+```bash
+s config add
+```
+
+![image-20240317160347091](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240317160347091.png)
+
+选择阿里云 输入刚才的 `AccessKeyID` `AccessKeySecret` 第三个是个别名可以自定义
+
+![image-20240317160553844](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240317160553844.png)
+
+检查密钥是否正确,能输出信息就是对的
+
+```bash
+s config get -a [别名]
+```
+
+![image-20240317160635255](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240317160635255.png)
+
+3. 创建项目
+
+​	直接运行s命令即可，根据下图创建
+
+```bash
+s
+```
+
+![image-20240317161149648](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240317161149648.png)
+
+打开生成好的项目，在目录下执行`s deploy`,上传成功
+
+![image-20240317162553652](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240317162553652.png)
+
+[访问此链接](https://fcnext.console.aliyun.com/cn-chengdu/functions)即可找到函数，如果没有就找到你所选的服务器地区
+
+![image-20240317162728715](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240317162728715.png)
+
+![image-20240317165226258](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240317165226258.png)
+
+## 54-net
 

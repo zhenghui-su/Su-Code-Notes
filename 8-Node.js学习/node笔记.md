@@ -1134,7 +1134,7 @@ path.join('/foo','/cxk','/ikun','../')
 
 ### path.resolve
 
-用于将**相对路径解析**并且**返回绝对路径**
+用于将**相对路径解析**并且**返回绝对路径mn**
 
 如果传入了**多个**绝对路径 它将返回**最右边**的绝对路径
 
@@ -1147,7 +1147,7 @@ path.resolve('/aaa','/bbb','/ccc')
 
 ```js
 path.resolve(__dirname,'./index.js')
-//  /User/xiaoman/DeskTop/node/index.js
+//  /User/su/DeskTop/node/index.js
 ```
 
 如果只传入相对路径
@@ -4771,7 +4771,7 @@ db:
    port: 3306 #端口
    user: root #账号
    password: '123456' #密码 一定要字符串
-   database: xiaoman # 库
+   database: chenchen # 库
 ```
 
 index.js
@@ -5498,7 +5498,7 @@ import passport from 'passport'
 import { Strategy, ExtractJwt } from 'passport-jwt'
 @injectable()
 export class JWT {
-    private secret = 'xiaoman$%^&*()asdsd'
+    private secret = 'chenchen%^&*()asdsd'
     private jwtOptions = {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: this.secret
@@ -6900,3 +6900,164 @@ s
 
 ## 54-net
 
+`net`模块是Node.js的核心模块之一，它提供了用于创建基于网络的应用程序的API。`net`模块主要用于创建TCP服务器和`TCP`客户端，以及处理网络通信。
+
+![image-20240318192138907](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240318192138907.png)
+
+TCP（Transmission Control Protocol）是一种面向连接的、可靠的传输协议，用于在计算机网络上进行数据传输。它是互联网协议套件（TCP/IP）的一部分，是应用层和网络层之间的传输层协议。
+
+TCP的主要特点包括：
+
+1. 可靠性：TCP通过使用确认机制、序列号和重传策略来确保数据的可靠传输。它可以检测并纠正数据丢失、重复、损坏或失序的问题。
+2. 面向连接：在进行数据传输之前，TCP需要在发送方和接收方之间建立一个连接。连接的建立是通过三次握手来完成的，确保双方都准备好进行通信。
+3. 全双工通信：TCP支持双方同时进行双向通信，即发送方和接收方可以在同一时间发送和接收数据。
+4. 流式传输：TCP将数据视为连续的字节流进行传输，而不是离散的数据包。发送方将数据划分为较小的数据块，但TCP在传输过程中将其作为连续的字节流处理。
+5. 拥塞控制：TCP具备拥塞控制机制，用于避免网络拥塞和数据丢失。它通过动态调整发送速率、使用拥塞窗口和慢启动算法等方式来控制数据的发送速度。
+
+### 场景
+
+#### 服务端之间的通讯
+
+服务端之间的通讯可以直接使用TCP通讯，而不需要上升到http层
+
+server.js
+
+创建一个TCP服务，并且发送套接字，监听端口号3000
+
+```javascript
+import net from 'net'
+
+const server = net.createServer((socket) => {
+   setInterval(()=>{
+       socket.write('chenchen')
+   },1000)
+})
+server.listen(3000,()=>{
+    console.log('listening on 3000')
+})
+```
+
+client.js
+
+连接server端，并且监听返回的数据
+
+```javascript
+import net from 'net'
+
+const client = net.createConnection({
+    host: '127.0.0.1',
+    port: 3000,
+})
+
+client.on('data', (data) => {
+    console.log(data.toString())
+})
+```
+
+#### 传输层实现http协议
+
+创建一个TCP服务
+
+```javascript
+import net from 'net'
+
+const http = net.createServer((socket) => {
+    socket.on('data', (data) => {
+        console.log(data.toString())
+    })
+})
+http.listen(3000,()=>{
+     console.log('listening on 3000')
+})
+```
+
+`net.createServer`创建 `Unix` 域套接字并且返回一个server对象接受一个回调函数
+
+`socket`可以监听很多事件
+
+1. `close` 一旦套接字完全关闭就触发
+2. `connect` 当成功建立套接字连接时触发
+3. `data` 接收到数据时触发
+4. `end` 当套接字的另一端表示传输结束时触发，从而结束套接字的可读端
+
+通过node http.js 启动之后我们使用浏览器访问一下，打不开，但控制台输出了如下
+
+![image-20240318193127976](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240318193127976.png)
+
+可以看到浏览器发送了一个http get 请求 我们可以通过关键字get 返回相关的内容例如`html`
+
+```javascript
+import net from 'net'
+
+const html = `<h1>TCP Server</h1>`
+
+const reposneHeader = [
+    'HTTP/1.1 200 OK',
+    'Content-Type: text/html',
+    'Content-Length: ' + html.length,
+    'Server: Nodejs',
+    '\r\n',
+    html
+]
+
+const http = net.createServer((socket) => {
+    socket.on('data', (data) => {
+        if(/GET/.test(data.toString())) {
+            socket.write(reposneHeader.join('\r\n'))
+            socket.end()
+        }
+    })
+})
+http.listen(3000, () => {
+    console.log('listening on 3000')
+})
+```
+
+这时我们再访问localhost:3000就会有信息了
+
+![image-20240318193416306](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240318193416306.png)
+
+## 55-socket.io
+
+传统的 HTTP 是一种单向请求-响应协议，客户端发送请求后，服务器才会响应并返回相应的数据。在传统的 HTTP 中，客户端需要主动发送请求才能获取服务器上的资源，而且每次请求都需要重新建立连接，这种方式在实时通信和持续获取资源的场景下效率较低。
+
+![image-20240318193615020](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240318193615020.png)
+
+Socket 提供了实时的双向通信能力，可以实时地传输数据。客户端和服务器之间的通信是即时的，数据的传输和响应几乎是实时完成的，不需要轮询或定时发送请求
+
+![image-20240318193647613](https://chen-1320883525.cos.ap-chengdu.myqcloud.com/img/image-20240318193647613.png)
+
+### 安装依赖
+
+在正常开发中，我们会使用成熟的第三方库，原生`websocket`，用的较少，一些简单的项目，或者一些普通的业务可以使用，不过大部分还是使用第三方库。
+
+socket.io
+
+Socket.IO 是一个基于事件驱动的实时通信框架，用于构建实时应用程序。它提供了双向、低延迟的通信能力，使得服务器和客户端可以实时地发送和接收数据。
+
+Socket.IO 的主要特点包括：
+
+1. **实时性**: Socket.IO 构建在 WebSocket 协议之上，使用了 WebSocket 连接来实现实时通信。WebSocket 是一种双向通信协议，相比传统的 HTTP 请求-响应模型，它可以实现更快速、低延迟的数据传输。
+2. **事件驱动**: Socket.IO 使用事件驱动的编程模型。服务器和客户端可以通过触发事件来发送和接收数据。这种基于事件的通信模式使得开发者可以轻松地构建实时的应用程序，例如聊天应用、实时协作工具等。
+3. **跨平台支持**: Socket.IO 可以在多个平台上使用，包括浏览器、服务器和移动设备等。它提供了对多种编程语言和框架的支持，如 JavaScript、Node.js、Python、Java 等，使得开发者可以在不同的环境中构建实时应用程序。
+4. **容错性**: Socket.IO 具有容错能力，当 WebSocket 连接不可用时，它可以自动降级到其他传输机制，如 HTTP 长轮询。这意味着即使在不支持 WebSocket 的环境中，Socket.IO 仍然可以实现实时通信。
+5. **扩展性**: Socket.IO 支持水平扩展，可以将应用程序扩展到多个服务器，并实现事件的广播和传递。这使得应用程序可以处理大规模的并发连接，并实现高可用性和高性能
+
+Npm 安装
+
+```bash
+npm install socket.io
+```
+
+浏览器使用esm
+
+```html
+<script type="module">
+import { io } from "https://cdn.socket.io/4.7.4/socket.io.esm.min.js";
+ const socket = io('ws://localhost:3000'); //ws的地址
+</script>
+```
+
+[socket.io官网](https://socket.io/zh-CN/)，可通过官网查看教程
+
+### 聊天室案例
